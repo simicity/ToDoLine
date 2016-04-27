@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#dcdcdc"
+    android:background="#66cdaa"
     android:fitsSystemWindows="true"
     android:id="@+id/main_layout"
     android:focusableInTouchMode="true"
@@ -20,6 +20,6 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_white_24dp"
         android:tint="#181619"
-        app:backgroundTint="#E32F21"/>
+        app:backgroundTint="#f08080"/>
 
 </android.support.design.widget.CoordinatorLayout>

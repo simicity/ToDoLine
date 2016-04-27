@@ -53,7 +53,7 @@
         android:layout_column="3"
         android:layout_marginLeft="45dp"
         android:layout_marginTop="5dp"
-        android:layout_gravity="center|left"/>
+        android:layout_gravity="center|left" />
 
     <TextView
         android:layout_width="wrap_content"

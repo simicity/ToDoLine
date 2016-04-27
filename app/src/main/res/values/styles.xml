@@ -26,4 +26,5 @@
         <item name="android:activityOpenEnterAnimation">@animator/slide_up</item>
         <item name="android:activityCloseExitAnimation">@animator/slide_down</item>
     </style>
+
 </resources>

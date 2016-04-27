@@ -26,6 +26,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class TodoMain extends AppCompatActivity {
     static final int MENU_EDIT = 0;
     static final int MENU_DELETE = 1;
@@ -187,6 +189,11 @@ public class TodoMain extends AppCompatActivity {
         listview.setAdapter(rowAdapter);
 
         super.onRestart();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override

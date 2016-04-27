@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TO DO Line</string>
+    <string name="app_name">To Do Line</string>
     <string name="action_settings">Settings</string>
     <string name="btn_back">Cancel</string>
     <string name="btn_save">Add</string>

@@ -19,6 +19,8 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 /**
  * Created by simi on 2/11/16.
  */
@@ -119,6 +121,11 @@ public class TodoAdd extends AppCompatActivity {
                }
             }
         });
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override
