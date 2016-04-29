@@ -32,7 +32,7 @@ public class TodoAdd extends AppCompatActivity {
     private EditText edit_task;
     private EditText edit_memo;
     private TextView edit_time;
-    private int tmp_id, tmp_time, tmp_done, tmp_list_id;
+    private int tmp_id, tmp_time, tmp_done;
     InputMethodManager inputMethodManager;
     private RelativeLayout relativeLayout;
 
@@ -43,7 +43,6 @@ public class TodoAdd extends AppCompatActivity {
 
         Intent intent = getIntent();
         tmp_id = intent.getIntExtra("_id", -1);
-        tmp_list_id = intent.getIntExtra("_list_id", -1);
 
         alrt = new AlertDialog.Builder(this);
         todo = new TodoAdapter(this);
@@ -66,7 +65,7 @@ public class TodoAdd extends AppCompatActivity {
                 edit_time.setText(String.format("%02d", tmp_time / 100) + " : " + String.format("%02d", tmp_time%100));
                 tmp_done = c.getInt(c.getColumnIndex("done"));
             }
-        }else {
+        }else{
             Calendar calendar = Calendar.getInstance();
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int minute = calendar.get(Calendar.MINUTE);
@@ -113,10 +112,10 @@ public class TodoAdd extends AppCompatActivity {
                            .show();
                } else {
                    if(tmp_id == -1) {
-                       todo.insert(edit_task.getText().toString(), edit_memo.getText().toString(), tmp_time, tmp_list_id);
+                       todo.insert(edit_task.getText().toString(), edit_memo.getText().toString(), tmp_time);
                        finish();
                    } else {
-                       todo.update(tmp_id, edit_task.getText().toString(), edit_memo.getText().toString(), tmp_time, tmp_done, tmp_list_id);
+                       todo.update(tmp_id, edit_task.getText().toString(), edit_memo.getText().toString(), tmp_time, tmp_done);
                        finish();
                    }
                }

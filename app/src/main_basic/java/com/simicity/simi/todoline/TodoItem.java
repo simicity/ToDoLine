@@ -11,7 +11,6 @@ public class TodoItem {
     private String memo;
     private int time;
     private int done;
-    private int list_id;
 
     public void set_id(int _id) {
         this._id = _id;
@@ -51,13 +50,5 @@ public class TodoItem {
 
     public int getDone() {
         return done;
-    }
-
-    public void setList_id(int list_id) {
-        this.list_id = list_id;
-    }
-
-    public int getList_id() {
-        return list_id;
     }
 }
