@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -40,6 +39,7 @@ public class TodoMain extends AppCompatActivity {
     private TodoAdapter todoAdapter;
     private ListAdapter listAdapter;
     private TodoLineAdapter rowAdapter;
+    private TodoItem todoItem;
     private ListItem listItem;
     private List<TodoItem> todoItems = new ArrayList<TodoItem>();
     private List<ListItem> listItems = new ArrayList<ListItem>();
@@ -75,6 +75,7 @@ public class TodoMain extends AppCompatActivity {
         todoAdapter = new TodoAdapter(this);
         listAdapter = new ListAdapter(this);
         rowAdapter = new TodoLineAdapter(this, 0, todoItems);
+        todoItem = new TodoItem();
         listItem = new ListItem();
 
         listview = (ListView)findViewById(R.id.listView);
@@ -86,21 +87,17 @@ public class TodoMain extends AppCompatActivity {
         image_tolist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ListItem listItem = new ListItem();
-                listAdapter.updateList(listItem.get_list_id(), listItem.getList_name());
+                listAdapter.updateList(tmp_list_id, edit_title.getText().toString());
                 Intent intent = new Intent(TodoMain.this, ListMain.class);
                 startActivity(intent);
             }
         });
 
-        edit_title.setText(listItem.getList_name());
         edit_title.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     inputMethodManager.hideSoftInputFromWindow(edit_title.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
-                    listAdapter.updateList(tmp_list_id, edit_title.getText().toString());
-                    edit_title.setText(listItem.getList_name());
                     return true;
                 }
                 return false;
@@ -128,9 +125,9 @@ public class TodoMain extends AppCompatActivity {
         Cursor c = listAdapter.getListList(tmp_list_id);
         if(c.moveToFirst()) {
             do {
-                ListItem listItem = new ListItem();
                 listItem.set_list_id(c.getInt(c.getColumnIndex("_list_id")));
                 listItem.setList_name(c.getString(c.getColumnIndex("list_name")));
+                edit_title.setText(listItem.getList_name());
                 listItems.add(listItem);
             } while (c.moveToNext());
         }
@@ -138,13 +135,12 @@ public class TodoMain extends AppCompatActivity {
         c = todoAdapter.getAllList(tmp_list_id);
         if(c.moveToFirst()) {
             do {
-                TodoItem todoItem = new TodoItem();
                 todoItem.set_id(c.getInt(c.getColumnIndex("_id")));
                 todoItem.setTask(c.getString(c.getColumnIndex("task")));
                 todoItem.setMemo(c.getString(c.getColumnIndex("memo")));
                 todoItem.setTime(c.getInt(c.getColumnIndex("time")));
                 todoItem.setDone(c.getInt(c.getColumnIndex("done")));
-                todoItem.setDone(c.getInt(c.getColumnIndex("list_id")));
+                todoItem.setList_id(c.getInt(c.getColumnIndex("list_id")));
                 todoItems.add(todoItem);
             } while(c.moveToNext());
         }

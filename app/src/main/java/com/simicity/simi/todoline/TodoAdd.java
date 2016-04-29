@@ -113,6 +113,7 @@ public class TodoAdd extends AppCompatActivity {
                            .show();
                } else {
                    if(tmp_id == -1) {
+                       Log.d("debug", "id =" +tmp_list_id);
                        todo.insert(edit_task.getText().toString(), edit_memo.getText().toString(), tmp_time, tmp_list_id);
                        finish();
                    } else {
