@@ -40,6 +40,7 @@ public class TodoMain extends AppCompatActivity {
     private TodoAdapter todoAdapter;
     private ListAdapter listAdapter;
     private TodoLineAdapter rowAdapter;
+    private ListItem listItem;
     private List<TodoItem> todoItems = new ArrayList<TodoItem>();
     private List<ListItem> listItems = new ArrayList<ListItem>();
     private ListView listview;
@@ -74,6 +75,7 @@ public class TodoMain extends AppCompatActivity {
         todoAdapter = new TodoAdapter(this);
         listAdapter = new ListAdapter(this);
         rowAdapter = new TodoLineAdapter(this, 0, todoItems);
+        listItem = new ListItem();
 
         listview = (ListView)findViewById(R.id.listView);
         listview.setAdapter(rowAdapter);
@@ -91,20 +93,14 @@ public class TodoMain extends AppCompatActivity {
             }
         });
 
-        Cursor c = listAdapter.getListList(tmp_list_id);
-        if(c.moveToFirst()) {
-            do {
-                edit_title.setText(c.getString(c.getColumnIndex("list_name")));
-            } while(c.moveToNext());
-        }
-
+        edit_title.setText(listItem.getList_name());
         edit_title.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     inputMethodManager.hideSoftInputFromWindow(edit_title.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                     listAdapter.updateList(tmp_list_id, edit_title.getText().toString());
-                    edit_title.setText(edit_title.getText().toString());
+                    edit_title.setText(listItem.getList_name());
                     return true;
                 }
                 return false;
@@ -136,7 +132,7 @@ public class TodoMain extends AppCompatActivity {
                 listItem.set_list_id(c.getInt(c.getColumnIndex("_list_id")));
                 listItem.setList_name(c.getString(c.getColumnIndex("list_name")));
                 listItems.add(listItem);
-            } while(c.moveToNext());
+            } while (c.moveToNext());
         }
 
         c = todoAdapter.getAllList(tmp_list_id);
