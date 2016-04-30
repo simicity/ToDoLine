@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -131,6 +132,9 @@ public class TodoMain extends AppCompatActivity {
         }
 
         c = todoAdapter.getThisList(tmp_list_id);
+        if(c.getCount() == 0) {
+            listview.setBackgroundColor(Color.argb(0, 0, 0, 0));
+        }
         if(c.moveToFirst()) {
             do {
                 TodoItem todoItem = new TodoItem();
@@ -246,5 +250,18 @@ public class TodoMain extends AppCompatActivity {
         inputMethodManager.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         coordinatorLayout.requestFocus();
         return true;
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction()==KeyEvent.ACTION_DOWN) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_BACK:
+                    Intent intent = new Intent(TodoMain.this, ListMain.class);
+                    startActivity(intent);
+                    return true;
+            }
+        }
+        return super.dispatchKeyEvent(event);
     }
 }
