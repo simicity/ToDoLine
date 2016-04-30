@@ -49,7 +49,7 @@ public class ListMain extends AppCompatActivity {
                 final EditText editView = new EditText(ListMain.this);
                 new AlertDialog.Builder(ListMain.this)
                         .setTitle("Input the list name")
-                        .setView(editView, 10, 0, 10, 0)
+                        .setView(editView, 10, 20, 10, 20)
                         .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 list.insertList(editView.getText().toString());

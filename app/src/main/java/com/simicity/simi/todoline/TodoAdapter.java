@@ -17,18 +17,19 @@ public class TodoAdapter {
         db = helper.getWritableDatabase();
     }
 
-    public Cursor getAllList(int list_id) {
-        String[] cols = {"task", "memo", "time", "done", "list_id"};
-        String where = "list_id = ?";
-        String[] param = {String.valueOf(list_id)};
-        return db.query(DBOpenHelper.TABLE_NAME_TODO, cols, where, param, null, null, null);
-    }
-
     public Cursor getList(int id) {
         String[] cols = {"task", "memo", "time", "done", "list_id"};
         String where = "_id = ?";
         String[] param = {String.valueOf(id)};
         return db.query(DBOpenHelper.TABLE_NAME_TODO, cols, where, param, null, null, null);
+    }
+
+    public Cursor getThisList(int list_id) {
+        String[] cols = {"_id", "task", "memo", "time", "done", "list_id"};
+        String where = "list_id = ?";
+        String[] param = {String.valueOf(list_id)};
+        return db.query(DBOpenHelper.TABLE_NAME_TODO, cols, where, param, null, null, null);
+        //return db.query(DBOpenHelper.TABLE_NAME_TODO, null, null, null, null, null, null);
     }
 
     public void insert(String task, String memo, int time, int list_id) {

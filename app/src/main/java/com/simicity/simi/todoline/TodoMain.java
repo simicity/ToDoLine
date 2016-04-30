@@ -39,7 +39,6 @@ public class TodoMain extends AppCompatActivity {
     private TodoAdapter todoAdapter;
     private ListAdapter listAdapter;
     private TodoLineAdapter rowAdapter;
-    private TodoItem todoItem;
     private ListItem listItem;
     private List<TodoItem> todoItems = new ArrayList<TodoItem>();
     private List<ListItem> listItems = new ArrayList<ListItem>();
@@ -75,12 +74,13 @@ public class TodoMain extends AppCompatActivity {
         todoAdapter = new TodoAdapter(this);
         listAdapter = new ListAdapter(this);
         rowAdapter = new TodoLineAdapter(this, 0, todoItems);
-        todoItem = new TodoItem();
         listItem = new ListItem();
 
         listview = (ListView)findViewById(R.id.listView);
         listview.setAdapter(rowAdapter);
         listview.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+
+        loadTodo();
 
         edit_title = (EditText)findViewById(R.id.edit_title);
         image_tolist = (ImageView)findViewById(R.id.img_list);
@@ -93,6 +93,7 @@ public class TodoMain extends AppCompatActivity {
             }
         });
 
+        edit_title.setText(listItem.getList_name());
         edit_title.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -103,8 +104,6 @@ public class TodoMain extends AppCompatActivity {
                 return false;
             }
         });
-
-        loadTodo();
 
         setMenuDialog();
     }
@@ -127,14 +126,14 @@ public class TodoMain extends AppCompatActivity {
             do {
                 listItem.set_list_id(c.getInt(c.getColumnIndex("_list_id")));
                 listItem.setList_name(c.getString(c.getColumnIndex("list_name")));
-                edit_title.setText(listItem.getList_name());
                 listItems.add(listItem);
             } while (c.moveToNext());
         }
 
-        c = todoAdapter.getAllList(tmp_list_id);
+        c = todoAdapter.getThisList(tmp_list_id);
         if(c.moveToFirst()) {
             do {
+                TodoItem todoItem = new TodoItem();
                 todoItem.set_id(c.getInt(c.getColumnIndex("_id")));
                 todoItem.setTask(c.getString(c.getColumnIndex("task")));
                 todoItem.setMemo(c.getString(c.getColumnIndex("memo")));
@@ -144,6 +143,8 @@ public class TodoMain extends AppCompatActivity {
                 todoItems.add(todoItem);
             } while(c.moveToNext());
         }
+
+        c.close();
 
         Collections.sort(todoItems, itemComparator);
 

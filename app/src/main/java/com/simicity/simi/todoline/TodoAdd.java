@@ -113,13 +113,14 @@ public class TodoAdd extends AppCompatActivity {
                            .show();
                } else {
                    if(tmp_id == -1) {
-                       Log.d("debug", "id =" +tmp_list_id);
                        todo.insert(edit_task.getText().toString(), edit_memo.getText().toString(), tmp_time, tmp_list_id);
-                       finish();
                    } else {
                        todo.update(tmp_id, edit_task.getText().toString(), edit_memo.getText().toString(), tmp_time, tmp_done, tmp_list_id);
-                       finish();
                    }
+
+                   Intent intent = new Intent(TodoAdd.this, TodoMain.class);
+                   intent.putExtra("_list_id", tmp_list_id);
+                   startActivity(intent);
                }
             }
         });
