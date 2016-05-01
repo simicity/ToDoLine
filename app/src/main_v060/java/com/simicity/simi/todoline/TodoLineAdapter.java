@@ -30,10 +30,9 @@ public class TodoLineAdapter extends ArrayAdapter<TodoItem>{
             convertView = new TodoView(getContext());
         }
 
-        TodoItem todoItem = getItem(position);
-
+        TodoItem item = getItem(position);
         TodoView todoView = (TodoView) convertView;
-        todoView.setTodoView(todoItem);
+        todoView.setTodoView(item);
 
         return  convertView;
     }

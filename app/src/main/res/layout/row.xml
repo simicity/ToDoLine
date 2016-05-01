@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="80dp">
-
-    <ImageView
-        android:src="@drawable/line"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/imageView"
-        android:layout_row="0"
-        android:layout_column="2"
-        android:layout_rowSpan="3"
-        android:padding="-50dp"
-        android:layout_margin="-17dp"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,51 +11,74 @@
         android:textColor="#181619"
         android:textSize="18dp"
         android:id="@+id/todo_time"
-        android:layout_row="0"
-        android:layout_column="0"
-        android:layout_rowSpan="2"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
-        android:layout_gravity="center|left" />
+        android:gravity="top|left" />
 
     <RadioButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/todo_radio"
         android:background="@null"
-        android:layout_row="0"
-        android:layout_column="1"
-        android:layout_rowSpan="2"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="18dp"
         android:layout_marginTop="5dp"
-        android:layout_gravity="center|left"
+        android:gravity="top|left"
         android:focusable="false"
         android:clickable="false" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Task"
-        android:textColor="#181619"
-        android:textSize="18dp"
-        android:id="@+id/todo_task"
-        android:layout_row="0"
-        android:layout_column="3"
-        android:layout_marginLeft="45dp"
-        android:layout_marginTop="5dp"
-        android:layout_gravity="center|left" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="-18dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Memo"
-        android:textColor="#181619"
-        android:textSize="12dp"
-        android:id="@+id/todo_memo"
-        android:layout_row="1"
-        android:layout_column="3"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="5dp"
-        android:layout_gravity="top|left"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:text=" "
+            android:id="@+id/formerLineView"
+            android:background="@drawable/border"
+            android:layout_marginBottom="10dp"
+            android:gravity="fill"/>
 
-</GridLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text=" "
+            android:id="@+id/latterLineView"
+            android:background="@drawable/border"
+            android:layout_marginTop="10dp"
+            android:gravity="fill"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Task"
+            android:textColor="#181619"
+            android:textSize="18dp"
+            android:id="@+id/todo_task"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="5dp"
+            android:gravity="top|left" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="25dp"
+            android:text="Memo"
+            android:textColor="#181619"
+            android:textSize="12dp"
+            android:id="@+id/todo_memo"
+            android:layout_marginLeft="50dp"
+            android:gravity="top|left"/>
+
+    </LinearLayout>
+
+</LinearLayout>

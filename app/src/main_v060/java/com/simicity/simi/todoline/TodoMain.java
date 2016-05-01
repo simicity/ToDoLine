@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,10 +18,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -36,27 +34,19 @@ public class TodoMain extends AppCompatActivity {
     static final int MENU_SELECTIVEDELETE = 2;
     static final int MENU_DELETEALL = 3;
 
-    private TodoAdapter todoAdapter;
-    private ListAdapter listAdapter;
+    private TodoAdapter todo;
     private TodoLineAdapter rowAdapter;
-    private List<TodoItem> todoItems = new ArrayList<TodoItem>();
-    private List<ListItem> listItems = new ArrayList<ListItem>();
+    private List<TodoItem> list = new ArrayList<TodoItem>();
     private ListView listview;
     private EditText edit_title;
-    private ImageView image_tolist;
     InputMethodManager inputMethodManager;
     private CoordinatorLayout coordinatorLayout;
-    private int tmp_list_id;
-    private String tmp_list_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setContentView(R.layout.todo_main);
-
-        Intent intent = getIntent();
-        tmp_list_id = intent.getIntExtra("_list_id", -1);
 
         inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         coordinatorLayout = (CoordinatorLayout)findViewById(R.id.main_layout);
@@ -66,50 +56,29 @@ public class TodoMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TodoMain.this, TodoAdd.class);
-                intent.putExtra("_list_id", tmp_list_id);
                 startActivity(intent);
             }
         });
-
-        todoAdapter = new TodoAdapter(this);
-        listAdapter = new ListAdapter(this);
-        rowAdapter = new TodoLineAdapter(this, 0, todoItems);
-
-        listview = (ListView)findViewById(R.id.listView);
-        listview.setAdapter(rowAdapter);
-        listview.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
-
-        loadTodo();
 
         edit_title = (EditText)findViewById(R.id.edit_title);
-        image_tolist = (ImageView)findViewById(R.id.img_list);
-        image_tolist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listAdapter.updateList(tmp_list_id, edit_title.getText().toString());
-                Intent intent = new Intent(TodoMain.this, ListMain.class);
-                startActivity(intent);
-            }
-        });
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        edit_title.setText(String.format("%d/%d To Do List", month, day));
 
-        edit_title.setText(tmp_list_name);
-        edit_title.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    inputMethodManager.hideSoftInputFromWindow(edit_title.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
-                    return true;
-                }
-                return false;
-            }
-        });
+        todo = new TodoAdapter(this);
+        rowAdapter = new TodoLineAdapter(this, 0, list);
+        listview = (ListView)findViewById(R.id.listView);
+
+        listview.setAdapter(rowAdapter);
+        listview.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+        loadTodo();
 
         setMenuDialog();
     }
 
     protected void loadTodo() {
-        todoItems.clear();
-        listItems.clear();
+        list.clear();
 
         Comparator<TodoItem> itemComparator = new Comparator<TodoItem>() {
             @Override
@@ -120,37 +89,20 @@ public class TodoMain extends AppCompatActivity {
             }
         };
 
-        Cursor c = listAdapter.getListList(tmp_list_id);
+        Cursor c = todo.getAllList();
         if(c.moveToFirst()) {
             do {
-                ListItem listItem = new ListItem();
-                listItem.set_list_id(c.getInt(c.getColumnIndex("_list_id")));
-                listItem.setList_name(c.getString(c.getColumnIndex("list_name")));
-                listItems.add(listItem);
-                tmp_list_name = listItem.getList_name();
-            } while (c.moveToNext());
-        }
-
-        c = todoAdapter.getThisList(tmp_list_id);
-        if(c.getCount() == 0) {
-            listview.setBackgroundColor(Color.argb(0, 0, 0, 0));
-        }
-        if(c.moveToFirst()) {
-            do {
-                TodoItem todoItem = new TodoItem();
-                todoItem.set_id(c.getInt(c.getColumnIndex("_id")));
-                todoItem.setTask(c.getString(c.getColumnIndex("task")));
-                todoItem.setMemo(c.getString(c.getColumnIndex("memo")));
-                todoItem.setTime(c.getInt(c.getColumnIndex("time")));
-                todoItem.setDone(c.getInt(c.getColumnIndex("done")));
-                todoItem.setList_id(c.getInt(c.getColumnIndex("list_id")));
-                todoItems.add(todoItem);
+                TodoItem item = new TodoItem();
+                item.set_id(c.getInt(c.getColumnIndex("_id")));
+                item.setTask(c.getString(c.getColumnIndex("task")));
+                item.setMemo(c.getString(c.getColumnIndex("memo")));
+                item.setTime(c.getInt(c.getColumnIndex("time")));
+                item.setDone(c.getInt(c.getColumnIndex("done")));
+                list.add(item);
             } while(c.moveToNext());
         }
 
-        c.close();
-
-        Collections.sort(todoItems, itemComparator);
+        Collections.sort(list, itemComparator);
 
         rowAdapter.notifyDataSetChanged();
         listview.invalidateViews();
@@ -171,13 +123,12 @@ public class TodoMain extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-        final TodoItem detail = todoItems.get(menuInfo.position);
+        final TodoItem detail = list.get(menuInfo.position);
 
         switch(item.getItemId()) {
             case MENU_EDIT:
                 Intent intent = new Intent(TodoMain.this, TodoAdd.class);
                 intent.putExtra("_id", detail.get_id());
-                intent.putExtra("_list_id", detail.getList_id());
                 startActivity(intent);
                 break;
 
@@ -188,14 +139,13 @@ public class TodoMain extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        todoAdapter.delete(detail.get_id());
+                                        todo.delete(detail.get_id());
                                         loadTodo();
                                     }
                                 })
                         .setNegativeButton("No", null)
                         .show();
                 break;
-
             case MENU_SELECTIVEDELETE:
                 new AlertDialog.Builder(this)
                         .setMessage("Sure?")
@@ -203,7 +153,7 @@ public class TodoMain extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        todoAdapter.selectivedelete();
+                                        todo.selectivedelete();
                                         loadTodo();
                                     }
                                 })
@@ -218,7 +168,7 @@ public class TodoMain extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        todoAdapter.deleteAll();
+                                        todo.deleteAll();
                                         loadTodo();
                                     }
                                 })
@@ -235,7 +185,7 @@ public class TodoMain extends AppCompatActivity {
         loadTodo();
 
         listview = (ListView)findViewById(R.id.listView);
-        TodoLineAdapter rowAdapter = new TodoLineAdapter(this, 0, todoItems);
+        TodoLineAdapter rowAdapter = new TodoLineAdapter(this, 0, list);
         listview.setAdapter(rowAdapter);
 
         super.onRestart();
@@ -251,18 +201,5 @@ public class TodoMain extends AppCompatActivity {
         inputMethodManager.hideSoftInputFromWindow(coordinatorLayout.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         coordinatorLayout.requestFocus();
         return true;
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getAction()==KeyEvent.ACTION_DOWN) {
-            switch (event.getKeyCode()) {
-                case KeyEvent.KEYCODE_BACK:
-                    Intent intent = new Intent(TodoMain.this, ListMain.class);
-                    startActivity(intent);
-                    return true;
-            }
-        }
-        return super.dispatchKeyEvent(event);
     }
 }

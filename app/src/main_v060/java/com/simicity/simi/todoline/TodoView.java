@@ -2,6 +2,7 @@ package com.simicity.simi.todoline;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.widget.Checkable;
 import android.widget.GridLayout;
 import android.widget.RadioButton;
@@ -60,7 +61,7 @@ public class TodoView extends GridLayout implements Checkable{
                 textView[2].setTextColor(Color.parseColor("#181619"));
             }
 
-            todo.update(item.get_id(), item.getTask(), item.getMemo(), item.getTime(), item.getDone(), item.getList_id());
+            todo.update(item.get_id(), item.getTask(), item.getMemo(), item.getTime(), item.getDone());
             tmp_done = !tmp_done;
         }
     }

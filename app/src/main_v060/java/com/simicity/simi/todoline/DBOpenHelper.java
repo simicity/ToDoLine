@@ -10,8 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBOpenHelper extends SQLiteOpenHelper {
     static final String DB_NAME = "todo.db";
     static final int DB_VERSION = 1;
-    public static final String TABLE_NAME_TODO = "todo";
-    public static final String TABLE_NAME_LIST = "list";
+    public static final String TABLE_NAME = "todo";
     protected SQLiteDatabase db;
 
     public DBOpenHelper(Context context) {
@@ -21,26 +20,18 @@ public class DBOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE " + TABLE_NAME_TODO + "("
+                "CREATE TABLE " + TABLE_NAME + "("
                         + " _id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
                         + " task TEXT NOT NULL,"
                         + " memo TEXT,"
                         + " time INTEGER,"
-                        + " done INTEGER NOT NULL,"
-                        + " list_id INTEGER NOT NULL);"
-        );
-
-        db.execSQL(
-                "CREATE TABLE " + TABLE_NAME_LIST + "("
-                        + " _list_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-                        + " list_name TEXT NOT NULL);"
+                        + " done INTEGER NOT NULL);"
         );
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_TODO + ";");
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_LIST + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME + ";");
         onCreate(db);
     }
 }
