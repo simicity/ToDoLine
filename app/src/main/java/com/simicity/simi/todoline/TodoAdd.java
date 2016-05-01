@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -32,7 +33,7 @@ public class TodoAdd extends AppCompatActivity {
     private EditText edit_task;
     private EditText edit_memo;
     private TextView edit_time;
-    private int tmp_id, tmp_time, tmp_done, tmp_list_id;
+    private int tmp_id, tmp_time, tmp_done, tmp_list_id, cnt = 0;
     InputMethodManager inputMethodManager;
     private RelativeLayout relativeLayout;
 

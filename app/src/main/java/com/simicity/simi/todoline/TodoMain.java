@@ -40,7 +40,6 @@ public class TodoMain extends AppCompatActivity {
     private TodoAdapter todoAdapter;
     private ListAdapter listAdapter;
     private TodoLineAdapter rowAdapter;
-    private ListItem listItem;
     private List<TodoItem> todoItems = new ArrayList<TodoItem>();
     private List<ListItem> listItems = new ArrayList<ListItem>();
     private ListView listview;
@@ -49,6 +48,7 @@ public class TodoMain extends AppCompatActivity {
     InputMethodManager inputMethodManager;
     private CoordinatorLayout coordinatorLayout;
     private int tmp_list_id;
+    private String tmp_list_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,6 @@ public class TodoMain extends AppCompatActivity {
         todoAdapter = new TodoAdapter(this);
         listAdapter = new ListAdapter(this);
         rowAdapter = new TodoLineAdapter(this, 0, todoItems);
-        listItem = new ListItem();
 
         listview = (ListView)findViewById(R.id.listView);
         listview.setAdapter(rowAdapter);
@@ -94,7 +93,7 @@ public class TodoMain extends AppCompatActivity {
             }
         });
 
-        edit_title.setText(listItem.getList_name());
+        edit_title.setText(tmp_list_name);
         edit_title.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -125,9 +124,11 @@ public class TodoMain extends AppCompatActivity {
         Cursor c = listAdapter.getListList(tmp_list_id);
         if(c.moveToFirst()) {
             do {
+                ListItem listItem = new ListItem();
                 listItem.set_list_id(c.getInt(c.getColumnIndex("_list_id")));
                 listItem.setList_name(c.getString(c.getColumnIndex("list_name")));
                 listItems.add(listItem);
+                tmp_list_name = listItem.getList_name();
             } while (c.moveToNext());
         }
 
@@ -177,6 +178,7 @@ public class TodoMain extends AppCompatActivity {
             case MENU_EDIT:
                 Intent intent = new Intent(TodoMain.this, TodoAdd.class);
                 intent.putExtra("_id", detail.get_id());
+                intent.putExtra("_list_id", detail.getList_id());
                 startActivity(intent);
                 break;
 

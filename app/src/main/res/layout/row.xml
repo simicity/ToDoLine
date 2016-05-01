@@ -7,12 +7,14 @@
         android:src="@drawable/line"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:minHeight="60dp"
         android:id="@+id/imageView"
         android:layout_row="0"
         android:layout_column="2"
         android:layout_rowSpan="3"
         android:padding="-50dp"
-        android:layout_margin="-17dp"/>
+        android:layout_margin="-17dp"
+        android:cropToPadding="true"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,7 +28,7 @@
         android:layout_rowSpan="2"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
-        android:layout_gravity="center|left" />
+        android:layout_gravity="top|left" />
 
     <RadioButton
         android:layout_width="wrap_content"
@@ -38,7 +40,7 @@
         android:layout_rowSpan="2"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
-        android:layout_gravity="center|left"
+        android:layout_gravity="top|left"
         android:focusable="false"
         android:clickable="false" />
 
@@ -53,7 +55,10 @@
         android:layout_column="3"
         android:layout_marginLeft="45dp"
         android:layout_marginTop="5dp"
-        android:layout_gravity="center|left" />
+        android:layout_gravity="top|left"
+        android:ellipsize="end"
+        android:maxLines="5"
+        android:scrollHorizontally="true" />
 
     <TextView
         android:layout_width="wrap_content"

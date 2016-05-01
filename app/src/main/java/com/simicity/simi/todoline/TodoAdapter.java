@@ -29,7 +29,6 @@ public class TodoAdapter {
         String where = "list_id = ?";
         String[] param = {String.valueOf(list_id)};
         return db.query(DBOpenHelper.TABLE_NAME_TODO, cols, where, param, null, null, null);
-        //return db.query(DBOpenHelper.TABLE_NAME_TODO, null, null, null, null, null, null);
     }
 
     public void insert(String task, String memo, int time, int list_id) {
