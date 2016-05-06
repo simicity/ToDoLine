@@ -33,7 +33,7 @@ public class TodoAdd extends AppCompatActivity {
     private EditText edit_task;
     private EditText edit_memo;
     private TextView edit_time;
-    private int tmp_id, tmp_time, tmp_done, tmp_list_id, cnt = 0;
+    private int tmp_id, tmp_time, tmp_done, tmp_list_id;
     InputMethodManager inputMethodManager;
     private RelativeLayout relativeLayout;
 
@@ -67,7 +67,7 @@ public class TodoAdd extends AppCompatActivity {
                 edit_time.setText(String.format("%02d", tmp_time / 100) + " : " + String.format("%02d", tmp_time%100));
                 tmp_done = c.getInt(c.getColumnIndex("done"));
             }
-        }else {
+        } else {
             Calendar calendar = Calendar.getInstance();
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int minute = calendar.get(Calendar.MINUTE);
@@ -76,9 +76,8 @@ public class TodoAdd extends AppCompatActivity {
         }
 
         edit_time.setOnClickListener(new View.OnClickListener() {
-            Calendar calendar = Calendar.getInstance();
-            int hour = calendar.get(Calendar.HOUR_OF_DAY);
-            int minute = calendar.get(Calendar.MINUTE);
+            int hour = tmp_time / 100;
+            int minute = tmp_time % 100;
 
             @Override
             public void onClick(View v) {
@@ -90,6 +89,8 @@ public class TodoAdd extends AppCompatActivity {
                             public void onTimeSet(TimePicker view, int picked_hour,int picked_minute) {
                                 edit_time.setText(String.format("%02d", picked_hour) + " : " + String.format("%02d", picked_minute));
                                 tmp_time = picked_hour * 100 + picked_minute;
+                                hour = picked_hour;
+                                minute = picked_minute;
                             }
                         },
                         hour,minute,true);
